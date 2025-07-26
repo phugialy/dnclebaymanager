@@ -4,6 +4,7 @@ import {
   HomeIcon, 
   TagIcon, 
   ShoppingCartIcon,
+  MagnifyingGlassIcon,
   Bars3Icon,
   XMarkIcon,
   UserCircleIcon,
@@ -21,6 +22,7 @@ const Layout: React.FC = () => {
     { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'Listings', href: '/listings', icon: TagIcon },
     { name: 'Orders', href: '/orders', icon: ShoppingCartIcon },
+    { name: 'Listing Lookup', href: '/listing-lookup', icon: MagnifyingGlassIcon },
   ];
 
   const handleLogout = () => {

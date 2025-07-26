@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Listings from './pages/Listings';
 import Orders from './pages/Orders';
+import ListingLookup from './pages/ListingLookup';
 import Login from './pages/Login';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="listings" element={<Listings />} />
               <Route path="orders" element={<Orders />} />
+              <Route path="listing-lookup" element={<ListingLookup />} />
             </Route>
             {/* Redirect any unknown routes to dashboard */}
             <Route path="*" element={<Navigate to="/" replace />} />

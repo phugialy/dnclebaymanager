@@ -66,6 +66,10 @@ export const ebayAPI = {
     return apiRequest('/ebay/orders');
   },
   
+  getListingByListId: async (listId: string) => {
+    return apiRequest(`/ebay/listing/${listId}`);
+  },
+  
   createListing: async (listingData: any) => {
     return apiRequest('/ebay/listings', {
       method: 'POST',
