@@ -6,14 +6,27 @@ import { logger } from '../utils/logger';
 const router = Router();
 
 // Initialize eBay services
-const authService = new EbayAuthService({
-  appId: process.env.EBAY_APP_ID || '',
-  certId: process.env.EBAY_CERT_ID || '',
-  clientSecret: process.env.EBAY_CLIENT_SECRET || '',
-  sandbox: process.env.EBAY_SANDBOX === 'true',
-});
+let authService: EbayAuthService;
+let listingService: EbayListingService;
 
-const listingService = new EbayListingService(authService);
+function initializeEbayServices() {
+  authService = new EbayAuthService({
+    appId: process.env.EBAY_APP_ID || '',
+    devId: process.env.EBAY_DEV_ID || '',
+    clientSecret: process.env.EBAY_CLIENT_SECRET || '',
+    sandbox: process.env.EBAY_SANDBOX === 'true',
+  });
+
+  // Debug: Log environment variables
+  logger.info('eBay Config:', {
+    appId: process.env.EBAY_APP_ID ? 'SET' : 'NOT SET',
+    devId: process.env.EBAY_DEV_ID ? 'SET' : 'NOT SET',
+    clientSecret: process.env.EBAY_CLIENT_SECRET ? 'SET' : 'NOT SET',
+    sandbox: process.env.EBAY_SANDBOX,
+  });
+
+  listingService = new EbayListingService(authService);
+}
 
 // Get listing by ListID
 router.get('/listing/:listId', async (req, res) => {
@@ -24,6 +37,13 @@ router.get('/listing/:listId', async (req, res) => {
       return res.status(400).json({ 
         success: false, 
         message: 'ListID is required' 
+      });
+    }
+
+    if (!listingService) {
+      return res.status(500).json({ 
+        success: false, 
+        message: 'eBay services not initialized' 
       });
     }
 
@@ -38,14 +58,14 @@ router.get('/listing/:listId', async (req, res) => {
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       data: listing
     });
     
   } catch (error: any) {
     logger.error('Error fetching eBay listing:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       success: false, 
       message: error.message || 'Failed to fetch listing' 
     });
@@ -77,4 +97,5 @@ router.get('/orders', (req, res) => {
   res.json({ message: 'Get orders - to be implemented' });
 });
 
-export const ebayRoutes = router; 
+export const ebayRoutes = router;
+export { initializeEbayServices }; 

@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 
 export interface EbayAuthConfig {
   appId: string;
-  certId: string;
+  devId: string;
   clientSecret: string;
   sandbox: boolean;
 }
@@ -12,6 +12,10 @@ class EbayAuthService {
   private accessToken: string | null = null;
   private tokenExpiry: Date | null = null;
   public config: EbayAuthConfig;
+
+  get isSandbox(): boolean {
+    return this.config.sandbox;
+  }
 
   constructor(config: EbayAuthConfig) {
     this.config = config;
@@ -34,6 +38,14 @@ class EbayAuthService {
       const authUrl = this.config.sandbox
         ? 'https://api.sandbox.ebay.com/identity/v1/oauth2/token'
         : 'https://api.ebay.com/identity/v1/oauth2/token';
+
+      // Debug: Log what we're sending
+      logger.info('eBay Auth Debug:', {
+        authUrl,
+        appId: this.config.appId ? 'SET' : 'NOT SET',
+        clientSecret: this.config.clientSecret ? 'SET' : 'NOT SET',
+        authHeader: `Basic ${Buffer.from(`${this.config.appId}:${this.config.clientSecret}`).toString('base64')}`,
+      });
 
       const response = await axios.post(authUrl, 
         'grant_type=client_credentials&scope=https://api.ebay.com/oauth/api_scope',

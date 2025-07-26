@@ -6,13 +6,19 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler';
 import { authRoutes } from './routes/auth';
-import { ebayRoutes } from './routes/ebay';
+import { ebayRoutes, initializeEbayServices } from './routes/ebay';
 import { dashboardRoutes } from './routes/dashboard';
 import { logger } from './utils/logger';
 import { initializeDatabase } from './utils/database';
 
 // Load environment variables
-dotenv.config();
+import path from 'path';
+const envPath = path.resolve('./.env');
+console.log('Loading .env from:', envPath);
+dotenv.config({ path: envPath });
+
+// Initialize eBay services after environment variables are loaded
+initializeEbayServices();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

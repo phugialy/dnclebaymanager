@@ -33,7 +33,7 @@ class EbayListingService {
 
   constructor(authService: EbayAuthService) {
     this.authService = authService;
-    this.baseURL = authService.config.sandbox 
+    this.baseURL = authService.isSandbox 
       ? 'https://api.sandbox.ebay.com'
       : 'https://api.ebay.com';
   }
