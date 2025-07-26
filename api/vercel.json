@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "functions": {
+    "index.ts": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.ts"
+    }
+  ]
+} 

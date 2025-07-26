@@ -14,7 +14,7 @@ const app = express();
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-domain.vercel.app'] // Update with your domain
+    ? ['https://dncl-ebay-manager.vercel.app', 'https://dncl-ebay-manager-git-main.vercel.app'] // Update with your actual Vercel domain
     : ['http://localhost:3000'],
   credentials: true
 }));

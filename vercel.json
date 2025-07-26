@@ -1,6 +1,8 @@
 {
   "version": 2,
   "name": "dncl-ebay-manager",
+  "buildCommand": "npm run vercel-build-client",
+  "outputDirectory": "client/build",
   "functions": {
     "api/index.ts": {
       "maxDuration": 30,
@@ -18,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.ts"
+      "dest": "/index.html"
     }
   ],
   "env": {
