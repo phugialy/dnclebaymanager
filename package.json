@@ -17,6 +17,7 @@
   "author": "DNCL",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "@vercel/node": "^3.0.0"
   }
 } 
