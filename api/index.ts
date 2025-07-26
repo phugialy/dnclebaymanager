@@ -3,10 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { errorHandler } from '../server/src/middleware/errorHandler';
-import { authRoutes } from '../server/src/routes/auth';
-import { ebayRoutes } from '../server/src/routes/ebay';
-import { dashboardRoutes } from '../server/src/routes/dashboard';
 
 const app = express();
 
@@ -39,13 +35,102 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
-app.use('/api/auth', authRoutes);
-app.use('/api/ebay', ebayRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+// Basic API routes (placeholder for now)
+app.get('/api/auth/profile', (req, res) => {
+  res.json({
+    user: {
+      id: '1',
+      username: 'dncl',
+      email: 'admin@dncl.com',
+      role: 'admin'
+    }
+  });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  const { username, password } = req.body;
+  
+  // Placeholder authentication
+  if (username === 'dncl' && password === 'adminDNCL@25') {
+    res.json({
+      success: true,
+      user: {
+        id: '1',
+        username: 'dncl',
+        email: 'admin@dncl.com',
+        role: 'admin'
+      }
+    });
+  } else {
+    res.status(401).json({ success: false, message: 'Invalid credentials' });
+  }
+});
+
+app.get('/api/dashboard/stats', (req, res) => {
+  res.json({
+    activeListings: 24,
+    totalOrders: 156,
+    revenue: 12450,
+    conversionRate: 3.2
+  });
+});
+
+app.get('/api/ebay/listings', (req, res) => {
+  res.json([
+    {
+      id: 1,
+      title: 'iPhone 13 Pro - 128GB - Excellent Condition',
+      price: 799.99,
+      quantity: 1,
+      status: 'Active',
+      views: 45,
+      watchers: 3,
+      created: '2024-01-15'
+    },
+    {
+      id: 2,
+      title: 'Samsung Galaxy S21 - 256GB - Like New',
+      price: 649.99,
+      quantity: 2,
+      status: 'Active',
+      views: 32,
+      watchers: 1,
+      created: '2024-01-14'
+    }
+  ]);
+});
+
+app.get('/api/ebay/orders', (req, res) => {
+  res.json([
+    {
+      id: '12345',
+      buyer: 'john_doe123',
+      items: ['iPhone 13 Pro - 128GB'],
+      total: 799.99,
+      status: 'Paid',
+      date: '2024-01-15',
+      shipping: 'Priority Mail'
+    },
+    {
+      id: '12346',
+      buyer: 'sarah_smith',
+      items: ['Samsung Galaxy S21 - 256GB'],
+      total: 649.99,
+      status: 'Shipped',
+      date: '2024-01-14',
+      shipping: 'Express Mail'
+    }
+  ]);
+});
 
 // Error handling middleware
-app.use(errorHandler);
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    error: 'Something went wrong!',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+  });
+});
 
 // 404 handler
 app.use('*', (req, res) => {
