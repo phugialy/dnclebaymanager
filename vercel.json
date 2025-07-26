@@ -1,12 +1,12 @@
 {
   "version": 2,
   "name": "dncl-ebay-manager",
-  "builds": [
-    {
-      "src": "server/src/index.ts",
-      "use": "@vercel/node"
+  "functions": {
+    "server/src/index.ts": {
+      "maxDuration": 30,
+      "memory": 1024
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -23,11 +23,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "server/src/index.ts": {
-      "maxDuration": 30,
-      "memory": 1024
-    }
   }
 } 
