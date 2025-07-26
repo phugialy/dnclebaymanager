@@ -1,0 +1,20 @@
+{
+  "name": "dncl-ebay-manager",
+  "version": "1.0.0",
+  "description": "Internal eBay API management tool",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "start": "cd server && npm start"
+  },
+  "keywords": ["ebay", "api", "management", "internal"],
+  "author": "DNCL",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 
