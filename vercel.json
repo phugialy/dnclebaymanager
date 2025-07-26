@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "dncl-ebay-manager",
-  "buildCommand": "npm run vercel-build-client",
+  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/build",
   "functions": {
     "api/index.ts": {
