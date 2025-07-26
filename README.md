@@ -20,7 +20,13 @@ Internal web application for eBay API management and operations.
 
 ## Quick Start
 
-1. **Install dependencies:**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/phugialy/dnclebaymanager.git
+   cd DNCL-Ebay-Manager
+   ```
+
+2. **Install dependencies:**
    ```bash
    npm run install-all
    ```

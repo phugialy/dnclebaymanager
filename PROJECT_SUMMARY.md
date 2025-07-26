@@ -278,6 +278,6 @@ npm start           # Start production server
 
 ---
 
-**Repository**: https://github.com/phugialy/DNCL-Ebay-Manager.git
+**Repository**: https://github.com/phugialy/dnclebaymanager.git
 
 **Status**: ✅ Ready for development and future enhancements 
