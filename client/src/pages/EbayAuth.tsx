@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { apiRequest } from '../utils/api';
 
@@ -38,7 +38,7 @@ const EbayAuth: React.FC = () => {
     }
   };
 
-  const fetchUserInfo = async (userId: string) => {
+  const fetchUserInfo = useCallback(async (userId: string) => {
     try {
       setLoading(true);
       const response = await apiRequest(`/ebay/auth/user?userId=${userId}`);
@@ -61,7 +61,7 @@ const EbayAuth: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     // Check if we're returning from OAuth callback
@@ -80,7 +80,7 @@ const EbayAuth: React.FC = () => {
       // Check if user is already authenticated
       checkAuthStatus();
     }
-  }, [searchParams]);
+  }, [searchParams, fetchUserInfo]);
 
   const initiateOAuth = async () => {
     try {
