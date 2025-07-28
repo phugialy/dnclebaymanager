@@ -8,7 +8,8 @@ import {
   Bars3Icon,
   XMarkIcon,
   UserCircleIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  KeyIcon
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
@@ -23,6 +24,7 @@ const Layout: React.FC = () => {
     { name: 'Listings', href: '/listings', icon: TagIcon },
     { name: 'Orders', href: '/orders', icon: ShoppingCartIcon },
     { name: 'Listing Lookup', href: '/listing-lookup', icon: MagnifyingGlassIcon },
+    { name: 'eBay Auth', href: '/ebay-auth', icon: KeyIcon },
   ];
 
   const handleLogout = () => {

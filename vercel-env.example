@@ -1,0 +1,29 @@
+# Vercel Environment Variables for Production
+# Add these in your Vercel dashboard under Settings > Environment Variables
+
+# Server Configuration
+PORT=5000
+NODE_ENV=production
+
+# eBay API Configuration (PRODUCTION)
+EBAY_APP_ID=Phuly-DNCLList-PRD-82b57c9de-6d50e473
+EBAY_CLIENT_SECRET=your_actual_client_secret_here
+EBAY_RUNAME=Phu_Ly-PhuLy-DNCLList--zpmog
+EBAY_ACTUAL_REDIRECT_URI=https://your-app-name.vercel.app/api/ebay/auth/callback
+EBAY_SANDBOX=false
+
+# Client Configuration
+CLIENT_URL=https://your-app-name.vercel.app
+
+# Database Configuration (Use Vercel's serverless database or external DB)
+DB_PATH=./data/ebay_manager.db
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Logging
+LOG_LEVEL=info
+
+# Vercel Specific
+VERCEL_URL=https://your-app-name.vercel.app 

@@ -7,9 +7,10 @@ import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler';
 import { authRoutes } from './routes/auth';
 import { ebayRoutes, initializeEbayServices } from './routes/ebay';
+import { ebayOAuthRoutes, initializeEbayOAuth } from './routes/ebayOAuth';
 import { dashboardRoutes } from './routes/dashboard';
 import { logger } from './utils/logger';
-import { initializeDatabase } from './utils/database';
+import { initializeDatabase, getDatabase } from './utils/database';
 
 // Load environment variables
 import path from 'path';
@@ -18,7 +19,7 @@ console.log('Loading .env from:', envPath);
 dotenv.config({ path: envPath });
 
 // Initialize eBay services after environment variables are loaded
-initializeEbayServices();
+// Note: This will be initialized with database in startServer()
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -63,6 +64,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/ebay', ebayRoutes);
+app.use('/api/ebay/auth', ebayOAuthRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Error handling middleware (must be last)
@@ -82,10 +84,16 @@ async function startServer() {
     await initializeDatabase();
     logger.info('Database initialized successfully');
     
+    // Initialize eBay OAuth services with database
+    const db = getDatabase();
+    initializeEbayOAuth(db);
+    initializeEbayServices(db);
+    
     app.listen(PORT, () => {
       logger.info(`Server running on port ${PORT}`);
       logger.info(`Environment: ${process.env.NODE_ENV}`);
       logger.info(`Health check: http://localhost:${PORT}/health`);
+      logger.info(`eBay OAuth health: http://localhost:${PORT}/api/ebay/auth/health`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);

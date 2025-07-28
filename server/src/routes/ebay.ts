@@ -1,42 +1,55 @@
 import { Router } from 'express';
-import EbayAuthService from '../services/ebayAuthService';
+import EbayOAuthService from '../services/ebayOAuthService';
 import EbayListingService from '../services/ebayListingService';
+import TokenStorageService from '../services/tokenStorageService';
 import { logger } from '../utils/logger';
+import { Database } from 'sqlite3';
 
 const router = Router();
 
 // Initialize eBay services
-let authService: EbayAuthService;
+let oauthService: EbayOAuthService;
 let listingService: EbayListingService;
+let tokenStorage: TokenStorageService;
 
-function initializeEbayServices() {
-  authService = new EbayAuthService({
+function initializeEbayServices(db: Database) {
+  oauthService = new EbayOAuthService({
     appId: process.env.EBAY_APP_ID || '',
-    devId: process.env.EBAY_DEV_ID || '',
     clientSecret: process.env.EBAY_CLIENT_SECRET || '',
+    ruName: process.env.EBAY_RUNAME || '',
+    actualRedirectUri: process.env.EBAY_ACTUAL_REDIRECT_URI || 'http://localhost:3000/api/ebay/auth/callback',
     sandbox: process.env.EBAY_SANDBOX === 'true',
   });
+
+  tokenStorage = new TokenStorageService(db);
 
   // Debug: Log environment variables
   logger.info('eBay Config:', {
     appId: process.env.EBAY_APP_ID ? 'SET' : 'NOT SET',
-    devId: process.env.EBAY_DEV_ID ? 'SET' : 'NOT SET',
     clientSecret: process.env.EBAY_CLIENT_SECRET ? 'SET' : 'NOT SET',
     sandbox: process.env.EBAY_SANDBOX,
   });
 
-  listingService = new EbayListingService(authService);
+  listingService = new EbayListingService(oauthService, tokenStorage);
 }
 
-// Get listing by ListID
+// Get listing by ListID (requires user authentication)
 router.get('/listing/:listId', async (req, res) => {
   try {
     const { listId } = req.params;
+    const { userId } = req.query;
     
     if (!listId) {
       return res.status(400).json({ 
         success: false, 
         message: 'ListID is required' 
+      });
+    }
+
+    if (!userId) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'User authentication required. Please connect your eBay account first.' 
       });
     }
 
@@ -47,9 +60,9 @@ router.get('/listing/:listId', async (req, res) => {
       });
     }
 
-    logger.info(`Fetching eBay listing: ${listId}`);
+    logger.info(`Fetching eBay listing: ${listId} for user: ${userId}`);
     
-    const listing = await listingService.getListingByListId(listId);
+    const listing = await listingService.getListingByListId(listId, userId.toString());
     
     if (!listing) {
       return res.status(404).json({ 

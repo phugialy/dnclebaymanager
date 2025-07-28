@@ -41,12 +41,19 @@ const ListingLookup: React.FC = () => {
       return;
     }
 
+    // Check if user is authenticated
+    const userId = localStorage.getItem('ebayUserId');
+    if (!userId) {
+      setError('Please connect your eBay account first to search for listings');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setListing(null);
 
     try {
-      const response = await ebayAPI.getListingByListId(listId.trim());
+      const response = await ebayAPI.getListingByListId(listId.trim(), userId);
       
       if (response.success) {
         setListing(response.data);

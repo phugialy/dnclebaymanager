@@ -1,0 +1,17 @@
+Test OAuth URL for eBay App (Using RuName):
+
+https://auth.ebay.com/oauth2/authorize?client_id=Phuly-DNCLList-PRD-82b57c9de-6d50e473&redirect_uri=Phu_Ly-PhuLy-DNCLList--zpmog&response_type=code&scope=https%3A%2F%2Fapi.ebay.com%2Foauth%2Fapi_scope&state=test123
+
+Components:
+- client_id: Phuly-DNCLList-PRD-82b57c9de-6d50e473
+- redirect_uri: Phu_Ly-PhuLy-DNCLList--zpmog (RuName, not URL)
+- response_type: code
+- scope: https://api.ebay.com/oauth/api_scope
+- state: test123
+
+IMPORTANT NOTES:
+1. The redirect_uri uses your RuName, not the full URL
+2. eBay will redirect to the actual URL configured in your Developer Portal
+3. Make sure you've added http://localhost:3000/api/ebay/auth/callback to your "Your auth accepted URL" field
+
+Try this URL in your browser to see if eBay recognizes your app. 

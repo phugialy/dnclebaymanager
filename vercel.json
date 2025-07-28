@@ -21,5 +21,22 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/ebay-auth",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/auth/success",
+      "destination": "/ebay-auth",
+      "permanent": false
+    },
+    {
+      "source": "/auth/error",
+      "destination": "/ebay-auth",
+      "permanent": false
+    }
+  ]
 } 

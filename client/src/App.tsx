@@ -8,6 +8,9 @@ import Listings from './pages/Listings';
 import Orders from './pages/Orders';
 import ListingLookup from './pages/ListingLookup';
 import Login from './pages/Login';
+import EbayAuth from './pages/EbayAuth';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <div className="App">
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/ebay-auth" element={<EbayAuth />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/" element={
               <ProtectedRoute>
                 <Layout />

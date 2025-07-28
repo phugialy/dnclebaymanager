@@ -66,8 +66,8 @@ export const ebayAPI = {
     return apiRequest('/ebay/orders');
   },
   
-  getListingByListId: async (listId: string) => {
-    return apiRequest(`/ebay/listing/${listId}`);
+  getListingByListId: async (listId: string, userId: string) => {
+    return apiRequest(`/ebay/listing/${listId}?userId=${userId}`);
   },
   
   createListing: async (listingData: any) => {
