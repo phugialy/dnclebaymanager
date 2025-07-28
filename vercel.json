@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "dncl-ebay-manager",
-  "buildCommand": "cd client && npm install && npm run build",
+  "buildCommand": "npm install && cd client && npm install && npm run build",
   "outputDirectory": "client/build",
   "functions": {
     "api/index.ts": {
@@ -19,16 +19,8 @@
       "dest": "/api/index.ts"
     },
     {
-      "src": "/ebay-auth",
-      "dest": "/"
-    },
-    {
-      "src": "/auth/success",
-      "dest": "/ebay-auth"
-    },
-    {
-      "src": "/auth/error",
-      "dest": "/ebay-auth"
+      "src": "/(.*)",
+      "dest": "/client/build/$1"
     }
   ],
   "env": {
