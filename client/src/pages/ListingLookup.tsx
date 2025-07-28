@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MagnifyingGlassIcon, ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { ebayAPI } from '../utils/api';
 
 interface EbayListing {
@@ -260,7 +260,7 @@ const ListingLookup: React.FC = () => {
                       <img
                         key={index}
                         src={image}
-                        alt={`Listing image ${index + 1}`}
+                        alt={`${index + 1}`}
                         className="w-full h-24 object-cover rounded-lg border border-gray-200"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
