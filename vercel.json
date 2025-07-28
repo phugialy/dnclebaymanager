@@ -17,26 +17,21 @@
     {
       "src": "/health",
       "dest": "/api/index.ts"
+    },
+    {
+      "src": "/ebay-auth",
+      "dest": "/"
+    },
+    {
+      "src": "/auth/success",
+      "dest": "/ebay-auth"
+    },
+    {
+      "src": "/auth/error",
+      "dest": "/ebay-auth"
     }
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "redirects": [
-    {
-      "source": "/ebay-auth",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/auth/success",
-      "destination": "/ebay-auth",
-      "permanent": false
-    },
-    {
-      "source": "/auth/error",
-      "destination": "/ebay-auth",
-      "permanent": false
-    }
-  ]
+  }
 } 
