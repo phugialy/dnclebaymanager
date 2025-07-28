@@ -20,25 +20,6 @@ const EbayAuth: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  useEffect(() => {
-    // Check if we're returning from OAuth callback
-    const userId = searchParams.get('userId');
-    const errorMessage = searchParams.get('message');
-
-    if (errorMessage) {
-      setError(decodeURIComponent(errorMessage));
-      return;
-    }
-
-    if (userId) {
-      // Successfully authenticated, fetch user info
-      fetchUserInfo(userId);
-    } else {
-      // Check if user is already authenticated
-      checkAuthStatus();
-    }
-  }, [searchParams]);
-
   const checkAuthStatus = async () => {
     try {
       setLoading(true);
@@ -81,6 +62,25 @@ const EbayAuth: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Check if we're returning from OAuth callback
+    const userId = searchParams.get('userId');
+    const errorMessage = searchParams.get('message');
+
+    if (errorMessage) {
+      setError(decodeURIComponent(errorMessage));
+      return;
+    }
+
+    if (userId) {
+      // Successfully authenticated, fetch user info
+      fetchUserInfo(userId);
+    } else {
+      // Check if user is already authenticated
+      checkAuthStatus();
+    }
+  }, [searchParams]);
 
   const initiateOAuth = async () => {
     try {
