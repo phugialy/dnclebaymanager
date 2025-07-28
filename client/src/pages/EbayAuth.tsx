@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { apiRequest } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
 
 interface EbayUser {
   id: string;
@@ -19,8 +20,9 @@ const EbayAuth: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { loginWithEbay } = useAuth();
 
-  const checkAuthStatus = async () => {
+  const checkAuthStatus = useCallback(async () => {
     try {
       setLoading(true);
       // This would check if user has valid tokens
@@ -36,7 +38,7 @@ const EbayAuth: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const fetchUserInfo = useCallback(async (userId: string) => {
     try {
@@ -47,13 +49,15 @@ const EbayAuth: React.FC = () => {
         const userData = response.data;
         setUser(userData);
         setIsAuthenticated(true);
-        localStorage.setItem('ebayUser', JSON.stringify(userData));
-        localStorage.setItem('ebayUserId', userId);
         
-        // Redirect to dashboard after successful auth
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
+        // Use the new loginWithEbay function
+        const success = await loginWithEbay(userData);
+        if (success) {
+          // Redirect to dashboard after successful auth
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 2000);
+        }
       }
     } catch (error: any) {
       console.error('Failed to fetch user info:', error);
@@ -61,7 +65,7 @@ const EbayAuth: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, [navigate, loginWithEbay]);
 
   useEffect(() => {
     // Check if we're returning from OAuth callback
@@ -80,7 +84,7 @@ const EbayAuth: React.FC = () => {
       // Check if user is already authenticated
       checkAuthStatus();
     }
-  }, [searchParams, fetchUserInfo]);
+  }, [searchParams, fetchUserInfo, checkAuthStatus]);
 
   const initiateOAuth = async () => {
     try {

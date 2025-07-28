@@ -11,6 +11,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<boolean>;
+  loginWithEbay: (ebayUser: any) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
 }
@@ -68,9 +69,34 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return false;
   };
 
+  const loginWithEbay = async (ebayUser: any): Promise<boolean> => {
+    setLoading(true);
+    
+    try {
+      // Create a user object from eBay user data
+      const userData: User = {
+        id: ebayUser.id || ebayUser.ebayUserId || 'ebay_user',
+        username: ebayUser.username || 'eBay User',
+        email: ebayUser.email || 'ebay@dncl.com',
+        role: 'ebay_user'
+      };
+      
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('ebayUser', JSON.stringify(ebayUser));
+      setLoading(false);
+      return true;
+    } catch (error) {
+      console.error('eBay login failed:', error);
+      setLoading(false);
+      return false;
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('ebayUser');
   };
 
   // Check for existing session on app load
@@ -90,6 +116,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     user,
     isAuthenticated: !!user,
     login,
+    loginWithEbay,
     logout,
     loading: loading || initializing
   };
