@@ -19,8 +19,24 @@
       "dest": "/api/index.ts"
     },
     {
+      "src": "/ebay-auth",
+      "dest": "/client/build/index.html"
+    },
+    {
+      "src": "/privacy",
+      "dest": "/client/build/index.html"
+    },
+    {
+      "src": "/terms",
+      "dest": "/client/build/index.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/client/build/index.html"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/client/build/$1"
+      "dest": "/client/build/index.html"
     }
   ],
   "env": {
