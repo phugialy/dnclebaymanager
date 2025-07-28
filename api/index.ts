@@ -77,7 +77,7 @@ app.get('/api/ebay/auth/callback', async (req, res) => {
     const { code, state } = req.query;
     
     if (!code) {
-      return res.redirect(`${process.env.CLIENT_URL || 'http://localhost:3000'}/ebay-auth?message=${encodeURIComponent('Authorization code not received')}`);
+      return res.redirect(`${process.env.CLIENT_URL || process.env.VERCEL_URL || 'https://dnclebaymanager.vercel.app'}/ebay-auth?message=${encodeURIComponent('Authorization code not received')}`);
     }
 
     // Exchange code for tokens
@@ -114,13 +114,13 @@ app.get('/api/ebay/auth/callback', async (req, res) => {
     };
 
     // Redirect to frontend with user data
-    const clientUrl = process.env.CLIENT_URL || process.env.VERCEL_URL || 'http://localhost:3000';
+    const clientUrl = process.env.CLIENT_URL || process.env.VERCEL_URL || 'https://dnclebaymanager.vercel.app';
     const redirectUrl = `${clientUrl}/ebay-auth?userId=${userData.userId}`;
     
     res.redirect(redirectUrl);
   } catch (error: any) {
     console.error('OAuth callback error:', error);
-    const clientUrl = process.env.CLIENT_URL || process.env.VERCEL_URL || 'http://localhost:3000';
+    const clientUrl = process.env.CLIENT_URL || process.env.VERCEL_URL || 'https://dnclebaymanager.vercel.app';
     const errorUrl = `${clientUrl}/ebay-auth?message=${encodeURIComponent(error.message || 'OAuth authentication failed')}`;
     res.redirect(errorUrl);
   }
